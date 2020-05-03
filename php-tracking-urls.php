@@ -29,10 +29,28 @@ function get_tracking_url($tracking_number) {
 			'reg'=>'/\b(82 ?\d{3} ?\d{3} ?\d{2})\b/i'
 		],
 
+        //USPS - UNITED STATES POSTAL SERVICE - FORMAT 4
+        [
+            'url'=>'https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=',
+            'reg'=>'/\b(95\d{17})\b/i'
+        ],
+
+        //Mail Innovations - UPS/UNITED STATES POSTAL SERVICE - FORMAT 1
+        [
+            'url'=>'http://wwwapps.ups.com/WebTracking/processInputRequest?TypeOfInquiryNumber=T&InquiryNumber1=',
+            'reg'=>'/\b(\d{18})\b/i'
+        ],
+
+        //Mail Innovations - UPS/UNITED STATES POSTAL SERVICE - FORMAT 2
+        [
+            'url'=>'http://wwwapps.ups.com/WebTracking/processInputRequest?TypeOfInquiryNumber=T&InquiryNumber1=',
+            'reg'=>'/\b(MI\d{14})\b/i'
+        ],
+
 		//FEDEX - FEDERAL EXPRESS
 		[
 			'url'=>'http://www.fedex.com/Tracking?language=english&cntry_code=us&tracknumbers=',
-			'reg'=>'/\b(((96\d\d|6\d)\d{3} ?\d{4}|96\d{2}|\d{4}) ?\d{4} ?\d{4}( ?\d{3})?)\b/i'
+			'reg'=>'/\b(((96\d\d|6\d)\d{3} ?\d{4}|96\d{2}|\d{4}) ?\d{4} ?\d{4}( ?\d{3}| ?\d{15})?)\b/i'
 		],
 
 		//ONTRAC
@@ -46,6 +64,19 @@ function get_tracking_url($tracking_number) {
 			'url'=>'http://www.dhl.com/content/g0/en/express/tracking.shtml?brand=DHL&AWB=',
 			'reg'=>'/\b(\d{4}[- ]?\d{4}[- ]?\d{2}|\d{3}[- ]?\d{8}|[A-Z]{3}\d{7})\b/i'
 		],
+
+        //DHL eCommerce
+        [
+            'url'=>'https://webtrack.dhlglobalmail.com/?trackingnumber=',
+            'reg'=>'/\b(\d{16}|\d{22})\b/i'
+        ],
+
+        //Royal Mail
+        [
+            'url'=>'http://track2.royalmail.com/portal/rm/track?trackNumber=',
+            'reg'=>'/\b(\w{2}\d{9}GB)\b/i'
+        ],
+
 	];
 
 
@@ -68,4 +99,10 @@ function get_tracking_url($tracking_number) {
 
 	//NO MATCH FOUND, RETURN FALSE
 	return false;
+}
+
+function get_service_name($trackid) {
+   $service = parse_url(get_tracking_url($trackid), PHP_URL_HOST);
+   $service_parts = explode(".", $service);
+   return strtoupper($service_parts[count($service_parts)-2]);
 }
