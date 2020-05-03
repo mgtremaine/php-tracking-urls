@@ -66,6 +66,12 @@ $numbers = [
 	'SEA1234567'					=> 'dhl.com',
 	'LAX1234567'					=> 'dhl.com',
 
+    //TEST DHL GLOBAL
+    '4041005861941412'              => 'dhlglobalmail.com',
+
+    //Royal Mail
+    'AB123456789GB'                 => 'royalmail.com',
+
 	//INVALID TRACKING NUMBERS
 	'INVALID TRACKING NUMBER'		=> false,
 ];
